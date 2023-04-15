@@ -2,6 +2,7 @@ package edu.vt.cs5254.fancygallery.api
 
 import edu.vt.cs5254.fancygallery.FlickrResponse
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 private const val API_KEY = "3ae26287096be65d294cfb132ff14e20"
 
@@ -13,5 +14,5 @@ interface FlickrApi {
                 "&nojsoncallback=1" +
                 "&extras=url_s"
     )
-    suspend fun fetchPhotos(): FlickrResponse
+    suspend fun fetchPhotos(@Query("per_page") pageLimit: Int): FlickrResponse
 }

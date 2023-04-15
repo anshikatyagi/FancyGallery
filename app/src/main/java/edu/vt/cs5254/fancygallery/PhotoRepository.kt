@@ -17,6 +17,6 @@ class PhotoRepository {
         flickrApi = retrofit.create()
     }
 
-    suspend fun fetchPhotos(): List<GalleryItem> =
-        flickrApi.fetchPhotos().photos.galleryItems
+    suspend fun fetchPhotos(page_size: Int = 100): List<GalleryItem> =
+        flickrApi.fetchPhotos(page_size).photos.galleryItems
 }
