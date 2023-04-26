@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private const val TAG = "PhotoGalleryViewModel"
+private const val TAG = "MainViewModel"
 
-class GalleryViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
     fun reloadGalleryItems() {
         _galleryItems.value = emptyList()
         viewModelScope.launch {

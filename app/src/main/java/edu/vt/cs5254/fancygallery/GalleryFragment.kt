@@ -1,10 +1,10 @@
 package edu.vt.cs5254.fancygallery
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +22,7 @@ class GalleryFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "FGBinding is null" }
 
-    private val galleryViewModel: GalleryViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,7 +39,7 @@ class GalleryFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.reload_menu -> {
                         requireContext().imageLoader.memoryCache?.clear()
-                        galleryViewModel.reloadGalleryItems()
+                        mainViewModel.reloadGalleryItems()
                         return true
                     }
                     else -> false
@@ -56,7 +56,7 @@ class GalleryFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                galleryViewModel.galleryItems.collect { items ->
+                mainViewModel.galleryItems.collect { items ->
                     binding.photoGrid.adapter = GalleryItemAdapter(items) { photoPageUri ->
                         findNavController().navigate(GalleryFragmentDirections.showPhoto(photoPageUri))
                     }
