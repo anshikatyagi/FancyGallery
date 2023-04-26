@@ -1,4 +1,4 @@
-package edu.vt.cs5254.fancygallery
+package edu.vt.cs5254.fancygallery.api
 
 import com.squareup.moshi.JsonClass
 

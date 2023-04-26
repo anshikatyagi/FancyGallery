@@ -1,7 +1,6 @@
 package edu.vt.cs5254.fancygallery
 
 import edu.vt.cs5254.fancygallery.api.FlickrApi
-import edu.vt.cs5254.fancygallery.api.GalleryItem
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create

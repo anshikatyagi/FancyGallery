@@ -1,6 +1,5 @@
 package edu.vt.cs5254.fancygallery.api
 
-import edu.vt.cs5254.fancygallery.FlickrResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
