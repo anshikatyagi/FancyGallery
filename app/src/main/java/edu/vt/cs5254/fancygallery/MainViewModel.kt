@@ -13,6 +13,9 @@ private const val TAG = "MainViewModel"
 class MainViewModel : ViewModel() {
     fun reloadGalleryItems() {
         _galleryItems.value = emptyList()
+        loadImages()
+    }
+    private fun loadImages(){
         viewModelScope.launch {
             try {
                 val items = photoRepository.fetchPhotos(99)
@@ -32,14 +35,6 @@ class MainViewModel : ViewModel() {
         get() = _galleryItems.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            try {
-                val items = photoRepository.fetchPhotos(99)
-                Log.d(TAG, "Items received: $items")
-                _galleryItems.value = items
-            } catch (ex: Exception) {
-                Log.e(TAG, "Failed to fetch gallery items", ex)
-            }
-        }
+        loadImages()
     }
 }

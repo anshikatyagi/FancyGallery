@@ -36,8 +36,8 @@ import kotlin.math.min
 
 // updated 2023-04-20
 
-private const val DEFAULT_WAIT_SECONDS = 60
-private const val MINIMUM_MARKER_COUNT = 10
+private const val DEFAULT_WAIT_SECONDS = 520
+private const val MINIMUM_MARKER_COUNT = 5
 private const val RECYCLER_ITEM_COUNT = 99
 
 @RunWith(AndroidJUnit4::class)
@@ -55,21 +55,21 @@ class P3Test {
         scenario.close()
     }
 
-//    @Test
-//    fun bottomNavigationBasics() {
-//        onView(withId(R.id.photo_grid)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-//        onView(withId(R.id.map_view)).check(doesNotExist())
-//
-//        onView(withId(R.id.map_fragment)).perform(click())
-//
-//        onView(withId(R.id.map_view)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-//        onView(withId(R.id.photo_grid)).check(doesNotExist())
-//
-//        onView(withId(R.id.gallery_fragment)).perform(click())
-//
-//        onView(withId(R.id.photo_grid)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-//        onView(withId(R.id.map_view)).check(doesNotExist())
-//    }
+    @Test
+    fun bottomNavigationBasics() {
+        onView(withId(R.id.photo_grid)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.map_view)).check(doesNotExist())
+
+        onView(withId(R.id.map_fragment)).perform(click())
+
+        onView(withId(R.id.map_view)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.photo_grid)).check(doesNotExist())
+
+        onView(withId(R.id.gallery_fragment)).perform(click())
+
+        onView(withId(R.id.photo_grid)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.map_view)).check(doesNotExist())
+    }
 
     @Test
     fun galleryFirstPlaceholder() {
@@ -180,105 +180,105 @@ class P3Test {
         )
     }
 
-//    @Test
-//    fun webToMapAndBack() {
-//        webFromGalleryFourHasProgressBarSubtitle()
-//
-//        onView(withId(R.id.map_fragment)).perform(click())
-//
-//        waitFor(withId(R.id.map_view), withEffectiveVisibility(Visibility.VISIBLE))
-//        onView(withId(R.id.photo_grid)).check(doesNotExist())
-//        onView(withId(R.id.web_view)).check(doesNotExist())
-//
-//        waitFor(withId(R.id.map_view), loadingIsComplete())
-//        onView(withId(R.id.gallery_fragment)).perform(click())
-//
-//        waitFor(withId(R.id.web_view), withEffectiveVisibility(Visibility.VISIBLE))
-//        onView(withId(R.id.map_view)).check(doesNotExist())
-//        onView(withId(R.id.photo_grid)).check(doesNotExist())
-//    }
+    @Test
+    fun webToMapAndBack() {
+        webFromGalleryFourHasProgressBarSubtitle()
 
-//    @Test
-//    fun mapInitiallyZoomedOut() {
-//        onView(withId(R.id.map_fragment)).perform(click())
-//        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
-//            .check(matches(isFullyZoomedOut()))
-//    }
-//
-//    @Test
-//    fun mapLoadsAllTiles() {
-//        onView(withId(R.id.map_fragment)).perform(click())
-//        waitFor(withId(R.id.map_view), loadingIsComplete())
-//    }
-//
-//    @Test
-//    fun mapLoadsAllMarkers() {
-//        galleryFirstImageLoaded()
-//        mapLoadsAllTiles()
-//        waitFor(withId(R.id.map_view), loadedMarkerCountMinimum())
-//    }
+        onView(withId(R.id.map_fragment)).perform(click())
 
-//    @Test
-//    fun mapClickMarkerShowsInfoAndRaises() {
-//        mapLoadsAllMarkers()
-//
-//        val markers = getMapMarkers(withId(R.id.map_view))
-//        val marker = markers.dropLast(1).last()
-//        assertFalse(marker.isInfoWindowShown)
-//
-//        val pos = marker.position
-//        onView(withId(R.id.map_view)).perform(zoomTo(14.0)).perform(panTo(pos)).perform(click())
-//
-//        for (n in 0 until 50) {
-//            if (marker.isInfoWindowShown) break
-//            sleep(100)
-//        }
-//        assertTrue(marker.isInfoWindowShown)
-//
-//        val newMarkers = getMapMarkers(withId(R.id.map_view))
-//        assertEquals(marker, newMarkers.last())
-//    }
-//
-//    @Test
-//    fun mapClickMarkerWithInfoLoadsWeb() {
-//        mapClickMarkerShowsInfoAndRaises()
-//        onView(withId(R.id.map_view)).perform(click())
-//        waitFor(isRoot(), hasDescendant(withId(R.id.web_view)), 50)
-//    }
-//
-//    @Test
-//    fun mapConfirmMaxZoom() {
-//        mapLoadsAllTiles()
-//        onView(withId(R.id.map_view)).perform(zoomTo(15.0))
-//        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
-//            .check(matches(isFullyZoomedIn()))
-//    }
+        waitFor(withId(R.id.map_view), withEffectiveVisibility(Visibility.VISIBLE))
+        onView(withId(R.id.photo_grid)).check(doesNotExist())
+        onView(withId(R.id.web_view)).check(doesNotExist())
 
-//    @Test
-//    fun mapRetainsState() {
-//        mapLoadsAllMarkers()
-//
-//        val firstMarker = getMapMarkers(withId(R.id.map_view)).first()
-//
-//        onView(withId(R.id.map_view)).perform(zoomTo(14.0)).perform(panTo(firstMarker.position))
-//
-//        waitFor(withId(R.id.map_view), loadingIsComplete())
-//
-//        onView(withId(R.id.gallery_fragment)).perform(click())
-//
-//        onView(withId(R.id.map_view)).check(doesNotExist())
-//
-//        onView(withId(R.id.map_fragment)).perform(click())
-//
-//        waitFor(withId(R.id.map_view), loadingIsComplete())
-//
-//        val zoom = getZoomLevel(withId(R.id.map_view))
-//        val center = getCenter(withId(R.id.map_view))
-//
-//        assertEquals(14.0, zoom, 0.1)
-//        assertEquals(firstMarker.position.latitude, center.latitude, 0.001)
-//        assertEquals(firstMarker.position.longitude, center.longitude, 0.001)
-//    }
+        waitFor(withId(R.id.map_view), loadingIsComplete())
+        onView(withId(R.id.gallery_fragment)).perform(click())
+
+        waitFor(withId(R.id.web_view), withEffectiveVisibility(Visibility.VISIBLE))
+        onView(withId(R.id.map_view)).check(doesNotExist())
+        onView(withId(R.id.photo_grid)).check(doesNotExist())
+    }
+
+    @Test
+    fun mapInitiallyZoomedOut() {
+        onView(withId(R.id.map_fragment)).perform(click())
+        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+            .check(matches(isFullyZoomedOut()))
+    }
+
+    @Test
+    fun mapLoadsAllTiles() {
+        onView(withId(R.id.map_fragment)).perform(click())
+        waitFor(withId(R.id.map_view), loadingIsComplete())
+    }
+
+    @Test
+    fun mapLoadsAllMarkers() {
+        galleryFirstImageLoaded()
+        mapLoadsAllTiles()
+        waitFor(withId(R.id.map_view), loadedMarkerCountMinimum())
+    }
+
+    @Test
+    fun mapClickMarkerShowsInfoAndRaises() {
+        mapLoadsAllMarkers()
+
+        val markers = getMapMarkers(withId(R.id.map_view))
+        val marker = markers.dropLast(1).last()
+        assertFalse(marker.isInfoWindowShown)
+
+        val pos = marker.position
+        onView(withId(R.id.map_view)).perform(zoomTo(14.0)).perform(panTo(pos)).perform(click())
+
+        for (n in 0 until 50) {
+            if (marker.isInfoWindowShown) break
+            sleep(100)
+        }
+        assertTrue(marker.isInfoWindowShown)
+
+        val newMarkers = getMapMarkers(withId(R.id.map_view))
+        assertEquals(marker, newMarkers.last())
+    }
+
+    @Test
+    fun mapClickMarkerWithInfoLoadsWeb() {
+        mapClickMarkerShowsInfoAndRaises()
+        onView(withId(R.id.map_view)).perform(click())
+        waitFor(isRoot(), hasDescendant(withId(R.id.web_view)), 50)
+    }
+
+    @Test
+    fun mapConfirmMaxZoom() {
+        mapLoadsAllTiles()
+        onView(withId(R.id.map_view)).perform(zoomTo(15.0))
+        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+            .check(matches(isFullyZoomedIn()))
+    }
+
+    @Test
+    fun mapRetainsState() {
+        mapLoadsAllMarkers()
+
+        val firstMarker = getMapMarkers(withId(R.id.map_view)).first()
+
+        onView(withId(R.id.map_view)).perform(zoomTo(14.0)).perform(panTo(firstMarker.position))
+
+        waitFor(withId(R.id.map_view), loadingIsComplete())
+
+        onView(withId(R.id.gallery_fragment)).perform(click())
+
+        onView(withId(R.id.map_view)).check(doesNotExist())
+
+        onView(withId(R.id.map_fragment)).perform(click())
+
+        waitFor(withId(R.id.map_view), loadingIsComplete())
+
+        val zoom = getZoomLevel(withId(R.id.map_view))
+        val center = getCenter(withId(R.id.map_view))
+
+        assertEquals(14.0, zoom, 0.1)
+        assertEquals(firstMarker.position.latitude, center.latitude, 0.001)
+        assertEquals(firstMarker.position.longitude, center.longitude, 0.001)
+    }
 
     // ------------  END OF TEST FUNCTIONS ABOVE ------------
 

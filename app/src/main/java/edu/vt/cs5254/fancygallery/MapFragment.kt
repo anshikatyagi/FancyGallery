@@ -1,5 +1,6 @@
 package edu.vt.cs5254.fancygallery
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import edu.vt.cs5254.fancygallery.databinding.FragmentMapBinding
+import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 
 class MapFragment : Fragment() {
@@ -53,6 +64,43 @@ class MapFragment : Fragment() {
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.ALWAYS)
             setTileSource(TileSourceFactory.MAPNIK)
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                activityVM.galleryItems.collect { giList ->
+                    giList.filter { it.latitude != 0.0 && it.longitude != 0.0 }
+                        .forEach { galleryItem ->
+                            val photoDrawable = loadDrawableFromUrl(galleryItem.url)
+                            photoDrawable?.let {
+                                val marker = Marker(binding.mapView).apply {
+                                    position = GeoPoint(galleryItem.latitude, galleryItem.longitude)
+                                    title = galleryItem.title
+                                    icon = it
+                                    setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                                    relatedObject = galleryItem
+                                    setOnMarkerClickListener { marker, mapview ->
+                                        mapview.apply {
+                                            controller.animateTo(marker.position)
+                                            overlays.remove(marker)
+                                            overlays.add(marker)
+                                        }
+                                        if (marker.isInfoWindowShown) {
+                                            val gItem = marker.relatedObject as GalleryItem
+                                            findNavController().navigate(
+                                                MapFragmentDirections.showPhotoFromMarker(gItem.photoPageUri)
+                                            )
+                                        } else {
+                                            showInfoWindow()
+                                        }
+                                        true
+                                    }
+                                }
+                                binding.mapView.overlays.add(marker)
+                            }
+                        }
+                    binding.mapView.invalidate()
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -63,7 +111,7 @@ class MapFragment : Fragment() {
             controller.setCenter(vm.mapCenter)
 
         }
-        Log.w("shared vm"," ${activityVM.galleryItems.value.size} accessed")
+//        Log.w("shared vm"," ${activityVM.galleryItems.value.size} accessed")
     }
 
     override fun onPause() {
@@ -76,5 +124,18 @@ class MapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private suspend fun loadDrawableFromUrl(url: String): Drawable? {
+        val loader = ImageLoader(requireContext())
+        val request = ImageRequest.Builder(requireContext())
+            .data(url)
+            .build()
+
+        return try {
+            val result = loader.execute(request)
+            (result as SuccessResult).drawable
+        } catch (ex: Exception) {
+            null
+        }
     }
 }
