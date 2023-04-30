@@ -5,7 +5,6 @@ import android.view.*
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -58,7 +57,11 @@ class GalleryFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.galleryItems.collect { items ->
                     binding.photoGrid.adapter = GalleryItemAdapter(items) { photoPageUri ->
-                        findNavController().navigate(GalleryFragmentDirections.showPhoto(photoPageUri))
+                        findNavController().navigate(
+                            GalleryFragmentDirections.showPhoto(
+                                photoPageUri
+                            )
+                        )
                     }
                 }
             }

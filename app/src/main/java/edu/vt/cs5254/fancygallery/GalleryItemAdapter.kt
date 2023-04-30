@@ -13,6 +13,7 @@ class GalleryItemHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     lateinit var boundGalleryItem: GalleryItem
         private set
+
     fun bind(galleryItem: GalleryItem, onItemClicked: (Uri) -> Unit) {
         boundGalleryItem = galleryItem
         binding.itemImageView.load(galleryItem.url) {

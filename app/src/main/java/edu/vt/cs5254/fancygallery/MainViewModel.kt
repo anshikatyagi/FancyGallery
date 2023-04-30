@@ -15,7 +15,8 @@ class MainViewModel : ViewModel() {
         _galleryItems.value = emptyList()
         loadImages()
     }
-    private fun loadImages(){
+
+    private fun loadImages() {
         viewModelScope.launch {
             try {
                 val items = photoRepository.fetchPhotos(99)

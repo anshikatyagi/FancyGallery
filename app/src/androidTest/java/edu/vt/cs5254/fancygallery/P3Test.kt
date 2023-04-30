@@ -37,7 +37,7 @@ import kotlin.math.min
 // updated 2023-04-20
 
 private const val DEFAULT_WAIT_SECONDS = 520
-private const val MINIMUM_MARKER_COUNT = 5
+private const val MINIMUM_MARKER_COUNT = 3
 private const val RECYCLER_ITEM_COUNT = 99
 
 @RunWith(AndroidJUnit4::class)

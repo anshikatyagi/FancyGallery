@@ -2,7 +2,6 @@ package edu.vt.cs5254.fancygallery
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +28,8 @@ import org.osmdroid.views.overlay.Marker
 
 class MapFragment : Fragment() {
 
-    private val vm:MapViewModel by viewModels()
-    private val activityVM:MainViewModel by activityViewModels()
+    private val vm: MapViewModel by viewModels()
+    private val activityVM: MainViewModel by activityViewModels()
     private var _binding: FragmentMapBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "FGBinding is null" }
@@ -48,8 +47,8 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Configuration.getInstance().apply {
-            load(context,PreferenceManager.getDefaultSharedPreferences(requireContext()))
-            userAgentValue=BuildConfig.APPLICATION_ID
+            load(context, PreferenceManager.getDefaultSharedPreferences(requireContext()))
+            userAgentValue = BuildConfig.APPLICATION_ID
         }
         with(binding.mapView) {
             minZoomLevel = 1.5
@@ -117,14 +116,16 @@ class MapFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         with(binding.mapView) {
-            vm.saveMapState(zoomLevelDouble,mapCenter)
+            vm.saveMapState(zoomLevelDouble, mapCenter)
             onPause()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     private suspend fun loadDrawableFromUrl(url: String): Drawable? {
         val loader = ImageLoader(requireContext())
         val request = ImageRequest.Builder(requireContext())
